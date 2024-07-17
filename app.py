@@ -32,7 +32,7 @@ def login():
         user = cursor.fetchone()
         # Check if username exists and password is correct
         if user and check_password_hash(user['password'], password):
-            session["user_id"] = user['id']
+            session["user_id"] = user['user_library_id']
             session['username'] = user['username']
             message = "Welcome home !"
             return render_template("index.html", message = message)
