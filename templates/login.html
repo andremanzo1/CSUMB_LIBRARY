@@ -7,6 +7,10 @@
         {{ bootstrap.load_css() }}
     </head>
     <body>
+        <div style = "position: absolute; top: 10px; right: 10px;">
+            <a href = "{{ url_for('library') }}" style = "padding: 10px 20px; 
+            background-color: #007BFF; color: white; text-decoration: none; border-radius: 5px; font-size: 16px;">Library</a>
+        </div>
         <section class="vh-100">
             
             <div class="container-fluid">
@@ -28,7 +32,7 @@
                         <input type="text" id="form2Example18" name="username" class="form-control form-control-lg" placeholder="Username" />
                         <label class="form-label" for="form2Example18"></label>
                       </div>
-          
+        
                       <div data-mdb-input-init class="form-outline mb-4">
                         <input type="password" name="password" id="form2Example28" class="form-control form-control-lg" placeholder = "Password" />
                         <label class="form-label" for="form2Example28" ></label>
@@ -55,4 +59,3 @@
           </section>
     </body>
 </html>
-
