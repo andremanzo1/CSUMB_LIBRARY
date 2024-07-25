@@ -1,20 +1,54 @@
+<!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">
-        <title> Index </title>
+        <title>Index</title>
         <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">                     
+        <style>
+            body {
+                background-image: url('https://media.timeout.com/images/106063026/750/422/image.jpg');
+                background-size: cover;
+                font-family: Arial, sans-serif;
+                color: white;
+                text-align: center;
+                padding: 50px;
+            }
+            .border {
+                background: rgba(0, 0, 0, 0.5);
+                padding: 20px;
+                border-radius: 10px;
+                display: inline-block;
+            }
+            .btn {
+                display: inline-block;
+                padding: 10px 20px;
+                font-size: 16px;
+                color: white;
+                background-color: #007BFF;
+                border: none;
+                border-radius: 5px;
+                text-decoration: none;
+                margin-top: 20px;
+                transition: background-color 0.3s;
+            }
+            .btn:hover {
+                background-color: #0056b3;
+            }
+            .word, .bottom {
+                margin: 20px 0;
+            }
+        </style>
     </head>
-    <body></br></br></br></br></br>
-        <div align="center">
-          <div align="center" class="border">
-             <div class="header">
+    <body>
+        <div class="border">
+            <div class="header">
                 <h1 class="word">Index</h1>
-             </div></br></br></br>
-                <h1 class="bottom">
-                     Hi {{session.username}}!!</br></br> Welcome to the index page...                 
-                </h1></br></br></br>
-                <a href="{{ url_for('logout') }}" class="btn">Logout</a>
-          </div>
+            </div>
+            <h1 class="bottom">
+                Hi {{session.username}}!!<br><br> Welcome...
+            </h1>
+            <a href="{{ url_for('logout') }}" class="btn">Logout</a>
+            <a href="{{ url_for('library') }}" class="btn">view library</a>
         </div>
     </body>
 </html>

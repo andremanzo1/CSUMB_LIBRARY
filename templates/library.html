@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library</title>
+    {{ bootstrap.load_css() }}
+    <style>
+        .button-container{
+            display: flex;
+            justify-content: flex-end;
+            padding: 1rem;
+        }
+        .button-container .btn{
+            margin-left: 0.5rem;
+        }
+        .book-article{
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .cover-image{
+            cursor: pointer;
+            display: block;
+            margin: 0 auto;
+            max-width: 200px;
+        }
+        .book-data{
+            display: none;
+            padding-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="button-container">
+            <a href="/home" class="btn btn-secondary">Home</a>
+            <a href="/add-book" class = "btn btn-success">Add Book</a>
+        </div>
+
+        <h1 class="my-4">Library</h1>
+        <form action="/library" method="get" class="mb-2">
+            <div class="input-group">
+                <input type="text" class = "form-control" name="search" placeholder="Search for books..." value="{{ request.args.get('search','') }}">
+                <button class="btn btn-outline-secondary" type="submit">Search</button>
+            </div>
+        </form>
+        <div class="row">
+            {% for book in books %}
+                <div class="col-md-4">
+                    <div class="book-article">
+                        {% if book.cover_image %}
+                            <img src="https://covers.openlibrary.org/b/id/{{ book.cover_image }}-L.jpg" alt="Cover Image"
+                                class="cover-image" onclick="toggleDetails('{{ loop.index0 }}')"/>
+                        {% else %}
+                            <img src="https://placehold.co/200x300?text=No\nImage\nFound" alt="No Image Found"
+                                class="cover-image" onclick="toggleDetails('{{ loop.index0 }}')">
+                        {% endif %}
+                        <h3>{{ book.title }}</h3>
+                        <div class="book-data" id="data-{{ loop.index0 }}">
+                            <p><strong>Author:</strong> {{book.author }}</p>
+                            <p><strong>Genre:</strong> {{book.genre }}</p>
+                            <p><strong>Read Status:</strong> {{book.read_status }}</p>
+                            <form action="/remove-book" method="post" style="display:inline;">
+                                <input type="hidden" name="book_index" value="{{ loop.index0 }}">
+                                <button type="submit" class="btn btn-danger mt-1">Remove Book</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="col-md-12">
+                    <p>No Books Available.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        function toggleDetails(index) {
+            var data = document.getElementById('data-' + index);
+            if (data.style.display === "none" || data.style.display === "") {
+                data.style.display = "block";
+            }else{
+                data.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>

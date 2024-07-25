@@ -5,10 +5,10 @@ import MySQLdb.cursors
 import re
 from flask_bootstrap import Bootstrap5
 import os
- 
+import requests
 app = Flask(__name__)
 bootstrap = Bootstrap5(app)
- 
+books = [] 
 app.secret_key = 'ITS_MINE'
  
 app.config['MYSQL_HOST'] = os.getenv('SQLHOST')
@@ -79,3 +79,61 @@ def register():
     elif request.method == 'POST':
         message = 'Please fill out the form !'    
     return render_template("register.html", message = message)
+@app.route("/home")
+def home():
+    return render_template('index.html')
+    
+@app.route("/library")
+def library():
+    search_request = request.args.get('search', '').lower()
+    if search_request:
+        books_found = [book for book in books if search_request in book['title'].lower() or
+                        search_request in book['author'].lower()]
+    else: 
+        books_found = books
+    return render_template('library.html', books = books_found)
+
+@app.route('/remove-book', methods = ['POST'])
+def remove_book():
+    book_index = int(request.form['book_index'])
+    if 0 <= book_index < len(books):
+        books.pop(book_index)
+    return redirect(url_for('library'))
+    
+def get_book_details(title, author):
+    search_url = f"https://openlibrary.org/search.json"
+    parameters = {'title': title, 'author': author}
+    response = requests.get(search_url, params = parameters)
+    data = response.json()
+
+    if data['docs']:
+        book = data['docs'][0]
+        return{
+            'title': book.get('title', 'Unknown Title'),
+            'author' : ','.join(book.get('author_name', ['Unknown Author'])),
+            'genre' : ','.join(book.get('subject', ['Unknown Genre'])),
+            'cover_image' : book.get('cover_i', '')
+        }
+    return None
+
+@app.route('/add-book', methods = ['GET', 'POST'])
+def add_book():
+    if request.method == 'POST':
+        title = request.form['title']
+        author = request.form['author']
+        book_details = get_book_details(title, author)
+
+        if book_details:
+            books.append({
+                'title': book_details['title'],
+                'author': book_details['author'],
+                'genre': book_details['genre'],
+                'cover_image': book_details['cover_image'],
+                'read_status': request.form['read_status'],
+            })
+            return redirect(url_for('library'))
+        else:
+            error = "Book not found."
+            return render_template('add_book.html', error = error)
+
+    return render_template('add_book.html')
