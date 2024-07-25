@@ -1,3 +1,4 @@
+<!-- Fidel -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +7,7 @@
     <title>Library</title>
     {{ bootstrap.load_css() }}
     <style>
+        /* Style for button container. */
         .button-container{
             display: flex;
             justify-content: flex-end;
@@ -14,16 +16,19 @@
         .button-container .btn{
             margin-left: 0.5rem;
         }
+        /* Style for the book article. */
         .book-article{
             margin-bottom: 20px;
             text-align: center;
         }
+        /* Style for the book covers. */
         .cover-image{
             cursor: pointer;
             display: block;
             margin: 0 auto;
             max-width: 200px;
         }
+        /* Style for the book details. */
         .book-data{
             display: none;
             padding-top: 10px;
@@ -32,22 +37,26 @@
 </head>
 <body>
     <div class="container">
+        <!-- Navigation Buttons -->
         <div class="button-container">
             <a href="/" class="btn btn-secondary">Home</a>
             <a href="/add-book" class = "btn btn-success">Add Book</a>
         </div>
 
         <h1 class="my-4">Library</h1>
+        <!-- Search through the books -->
         <form action="/library" method="get" class="mb-2">
             <div class="input-group">
                 <input type="text" class = "form-control" name="search" placeholder="Search for books..." value="{{ request.args.get('search','') }}">
                 <button class="btn btn-outline-secondary" type="submit">Search</button>
             </div>
         </form>
+        <!-- Display for the books. -->
         <div class="row">
             {% for book in books %}
                 <div class="col-md-4">
                     <div class="book-article">
+                        <!-- The book cover image or a placeholder if it's not found -->
                         {% if book.cover_image %}
                             <img src="https://covers.openlibrary.org/b/id/{{ book.cover_image }}-L.jpg" alt="Cover Image"
                                 class="cover-image" onclick="toggleDetails('{{ loop.index0 }}')"/>
@@ -56,6 +65,7 @@
                                 class="cover-image" onclick="toggleDetails('{{ loop.index0 }}')">
                         {% endif %}
                         <h3>{{ book.title }}</h3>
+                        <!-- Book Details -->
                         <div class="book-data" id="data-{{ loop.index0 }}">
                             <p><strong>Author:</strong> {{book.author }}</p>
                             <p><strong>Genre:</strong> {{book.genre }}</p>
@@ -76,6 +86,7 @@
     </div>
 
     <script>
+        // So the book details aren't always visible, they need to be toggled.
         function toggleDetails(index) {
             var data = document.getElementById('data-' + index);
             if (data.style.display === "none" || data.style.display === "") {

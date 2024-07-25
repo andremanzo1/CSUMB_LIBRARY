@@ -1,3 +1,4 @@
+<!-- Fidel -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +7,7 @@
     <title>Add Book</title>
     {{ bootstrap.load_css() }}
     <style>
+        /* Style for button container. */
         .button-container{
             display: flex;
             justify-content: flex-end;
@@ -18,16 +20,19 @@
 </head>
 <body>
     <div class="container">
+        <!-- Button to return to the library. -->
         <div class="button-container">
             <a href="/library" class="btn btn-secondary">Back to Library</a>
         </div>
         <div class="mt-4">
             <h1>Add a Book</h1>
+            <!-- Displays the error message. -->
             {% if error %}
                 <div class="alert alert-danger" role="alert">
                     {{ error }}
                 </div>
             {% endif %}
+            <!-- Form to add a new book. -->
             <form method="post">
                 <div class="mb-3">
                     <label for="title" class="form-label">Book Title</label>
