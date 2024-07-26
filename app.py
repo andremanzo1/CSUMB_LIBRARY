@@ -26,7 +26,6 @@ def login():
         username = request.form.get("username")
         password = request.form.get("password")
         # Retrieve user data from the database
-        # Your database query code goes here
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM python_accounts WHERE username = % s', (username, ))
         user = cursor.fetchone()
@@ -63,6 +62,7 @@ def register():
             cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
             cursor.execute('SELECT * FROM python_accounts WHERE username = % s', (username, ))
             account = cursor.fetchone()
+            # see if email entered properly
             if account:
                 message = 'Account already exists !'
             elif not re.match(r'[^@]+@[^@]+\.[^@]+', email):
